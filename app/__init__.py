@@ -52,6 +52,15 @@ def process_card():
 
     return "Card details processed successfully!", 200
 
+@app.route('/post_audio', methods=['POST'])
+def post_audio():
+    audio_data = request.get_data()
+    audio_file = open('./temp.mp3', 'wb')
+    audio_file.write(audio_data)
+    transcript = speech_to_text('./temp.mp3')
+    action = pick_action(transcript)
+    return actions[action['id']]['func'](action['parameter'])
+
 @app.route('/ai', methods=['GET'])
 def ai():
     transcript = speech_to_text('/app/audio-samples/RemoveCard.mp3')
