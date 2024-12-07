@@ -33,7 +33,7 @@ docker image build \
     -f Dockerfile .
 
 docker run -d -it \
-    -p 8080:80 \
+    -p 0.0.0.0:80:5000/tcp \
     --name $container_name \
     --hostname $(hostname)-$container_name \
     pisa
