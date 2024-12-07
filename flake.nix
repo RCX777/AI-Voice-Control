@@ -10,12 +10,27 @@
         pkgs = import nixpkgs {
           inherit system;
         };
-      in
+        python = pkgs.python311;
+      in with pkgs;
       {
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            python311
+        devShells.default = mkShell {
+          buildInputs = [
+            python
           ];
+          shellHook = ''
+            VENV=.venv
+
+            if test ! -d $VENV; then
+              python3.11 -m venv $VENV
+            fi
+            pip install --upgrade pip
+            . ./$VENV/bin/activate
+            export PYTHONPATH=`pwd`/$VENV/${python.sitePackages}/:$PYTHONPATH
+            pip install -r app/requirements.txt
+          '';
+          postShellHook = ''
+            ln -sf ${python.sitePackages}/* ./.venv/lib/python3.11/site-packages
+          '';
         };
       }
     );
