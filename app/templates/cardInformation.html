@@ -437,138 +437,99 @@ Credit Card
         </div>
       </div>
     </div>
-    <form class="form" autocomplete="off" novalidate>
-      <fieldset>
-        <label for="card-number">Card Number</label>
-        <input type="num" id="card-number" class="input-cart-number" maxlength="4" />
-        <input type="num" id="card-number-1" class="input-cart-number" maxlength="4" />
-        <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" />
-        <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" />
-      </fieldset>
-      <fieldset>
-        <label for="card-holder">Card holder</label>
-        <input type="text" id="card-holder" />
-      </fieldset>
-      <fieldset class="fieldset-expiration">
-        <label for="card-expiration-month">Expiration date</label>
-        <div class="select">
-          <select id="card-expiration-month">
-            <option></option>
-            <option>01</option>
-            <option>02</option>
-            <option>03</option>
-            <option>04</option>
-            <option>05</option>
-            <option>06</option>
-            <option>07</option>
-            <option>08</option>
-            <option>09</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-          </select>
-        </div>
-        <div class="select">
-          <select id="card-expiration-year">
-            <option></option>
-            <option>2016</option>
-            <option>2017</option>
-            <option>2018</option>
-            <option>2019</option>
-            <option>2020</option>
-            <option>2021</option>
-            <option>2022</option>
-            <option>2023</option>
-            <option>2024</option>
-            <option>2025</option>
-          </select>
-        </div>
-      </fieldset>
-      <fieldset class="fieldset-ccv">
-        <label for="card-ccv">CCV</label>
-        <input type="text" id="card-ccv" maxlength="3" />
-      </fieldset>
-      <button class="btn"><i class="fa fa-lock"></i> submit</button>
-    </form>
+    <form class="form" action="/process-card" method="POST" autocomplete="off" novalidate>
+        <fieldset>
+          <label for="card-number">Card Number</label>
+          <input type="num" name="card-number-0" class="input-cart-number" maxlength="4" required />
+          <input type="num" name="card-number-1" class="input-cart-number" maxlength="4" required />
+          <input type="num" name="card-number-2" class="input-cart-number" maxlength="4" required />
+          <input type="num" name="card-number-3" class="input-cart-number" maxlength="4" required />
+        </fieldset>
+        <fieldset>
+          <label for="card-holder">Card holder</label>
+          <input type="text" id="card-holder" name="card-holder" required />
+        </fieldset>
+        <fieldset class="fieldset-expiration">
+          <label for="card-expiration-month">Expiration date</label>
+          <div class="select">
+            <select id="card-expiration-month" name="card-expiration-month" required>
+              <option value="" disabled selected>MM</option>
+              <option>01</option>
+              <option>02</option>
+              <option>03</option>
+              <option>04</option>
+              <option>05</option>
+              <option>06</option>
+              <option>07</option>
+              <option>08</option>
+              <option>09</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <div class="select">
+            <select id="card-expiration-year" name="card-expiration-year" required>
+              <option value="" disabled selected>YYYY</option>
+              <option>2024</option>
+              <option>2025</option>
+              <option>2026</option>
+              <option>2027</option>
+              <option>2028</option>
+              <option>2029</option>
+              <option>2030</option>
+            </select>
+          </div>
+        </fieldset>
+        <fieldset class="fieldset-ccv">
+          <label for="card-ccv">CCV</label>
+          <input type="text" id="card-ccv" name="card-ccv" maxlength="3" required />
+        </fieldset>
+        <button type="submit" class="btn">Submit</button>
+      </form>      
   </div>
   
   
   <a class="the-most" target="_blank" href="https://codepen.io/2016/popular/pens/9/">
     <img src="https://raw.githubusercontent.com/supahfunk/supah-codepen/master/themost-2016.png">
   </a>
-    <script>
-
-$('.input-cart-number').on('keyup change', function(){
-  $t = $(this);
+  <script>
+    document.querySelector('.form').addEventListener('submit', function (event) {
+      const cardNumbers = [...document.querySelectorAll('.input-cart-number')].map(input => input.value);
+      const cardHolder = document.getElementById('card-holder').value.trim();
+      const expirationMonth = document.getElementById('card-expiration-month').value;
+      const expirationYear = document.getElementById('card-expiration-year').value;
+      const ccv = document.getElementById('card-ccv').value.trim();
   
-  if ($t.val().length > 3) {
-    $t.next().focus();
-  }
+      // Validare: Număr card complet
+      if (cardNumbers.some(number => number.length !== 4)) {
+        alert('Each card number segment must have 4 digits.');
+        event.preventDefault();
+        return;
+      }
   
-  var card_number = '';
-  $('.input-cart-number').each(function(){
-    card_number += $(this).val() + ' ';
-    if ($(this).val().length == 4) {
-      $(this).next().focus();
-    }
-  })
+      // Validare: Titular card
+      if (!cardHolder) {
+        alert('Card holder name is required.');
+        event.preventDefault();
+        return;
+      }
   
-  $('.credit-card-box .number').html(card_number);
-});
-
-$('#card-holder').on('keyup change', function(){
-  $t = $(this);
-  $('.credit-card-box .card-holder div').html($t.val());
-});
-
-$('#card-holder').on('keyup change', function(){
-  $t = $(this);
-  $('.credit-card-box .card-holder div').html($t.val());
-});
-
-$('#card-expiration-month, #card-expiration-year').change(function(){
-  m = $('#card-expiration-month option').index($('#card-expiration-month option:selected'));
-  m = (m < 10) ? '0' + m : m;
-  y = $('#card-expiration-year').val().substr(2,2);
-  $('.card-expiration-date div').html(m + '/' + y);
-})
-
-$('#card-ccv').on('focus', function(){
-  $('.credit-card-box').addClass('hover');
-}).on('blur', function(){
-  $('.credit-card-box').removeClass('hover');
-}).on('keyup change', function(){
-  $('.ccv div').html($(this).val());
-});
-
-
-/*--------------------
-CodePen Tile Preview
---------------------*/
-setTimeout(function(){
-  $('#card-ccv').focus().delay(1000).queue(function(){
-    $(this).blur().dequeue();
-  });
-}, 500);
-
-/*function getCreditCardType(accountNumber) {
-  if (/^5[1-5]/.test(accountNumber)) {
-    result = 'mastercard';
-  } else if (/^4/.test(accountNumber)) {
-    result = 'visa';
-  } else if ( /^(5018|5020|5038|6304|6759|676[1-3])/.test(accountNumber)) {
-    result = 'maestro';
-  } else {
-    result = 'unknown'
-  }
-  return result;
-}
-
-$('#card-number').change(function(){
-  console.log(getCreditCardType($(this).val()));
-})*/
-
-    </script>
+      // Validare: Dată de expirare
+      if (!expirationMonth || !expirationYear) {
+        alert('Expiration date is required.');
+        event.preventDefault();
+        return;
+      }
+  
+      // Validare: CCV
+      if (ccv.length !== 3 || isNaN(ccv)) {
+        alert('CCV must be a 3-digit number.');
+        event.preventDefault();
+        return;
+      }
+    });
+  </script>
 
 </body>
 </html>
