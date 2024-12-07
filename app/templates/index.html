@@ -57,21 +57,32 @@
             opacity: 1;
             transform: scaleX(1);
         }
-        .divider {
-            height: 1px;
-            background-color: #ddd;
-            margin: 20px;
+        .orange-line {
+            height: 5px;
+            background-color: orange;
             width: 100%;
+            margin: 0;
         }
 
         .banner {
-            text-align: center;
-            padding: 50px;
-            background-color: #ffe6cc;
-            background-image: url("{{url_for('static', filename='hands.png')}}");
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 10px;
+            background-image: url('static/orange_background.png'); /* Replace with actual background pattern */
             background-size: cover;
-            background-blend-mode: multiply;
+            background-position: center;
+            background-repeat: no-repeat;
             color: #003366;
+            height: 50vh;
+        }
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            gap: 40px;
         }
         .banner h1 {
             font-size: 36px;
@@ -92,8 +103,29 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .banner .cta-button:hover {
+        .mic-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            background-color: #003366;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .mic-button:hover {
             background-color: #0056b3;
+            
+        }
+        .mic-button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; /* Space between the text and the button */
         }
         .illustration {
             display: flex;
@@ -101,9 +133,33 @@
             margin-top: 20px;
         }
         .illustration img {
-            width: 200px;
+            width: 400px; /* Adjust to make the image larger */
+            max-width: 100%;
+            height: auto;
+        }
+        .text-content {
+            flex: 1;
+            max-width: 500px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers the content vertically */
+            align-items: center;
+        }
+
+        .text-content h1 {
+            font-size: 36px;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .text-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header class="header">
@@ -117,22 +173,32 @@
             <a href="#">Contact</a>
             <a href="#">Analysis results</a>
             <a href="#">About</a>
+            <a href="#">Subscription</a>
         </nav>
     </header>
-
-    <nav class="nav">
-        <a href="#">Subscription</a>
-    </nav>
-
+    <div class="orange-line"></div> <!-- Horizontal orange line -->
     <section class="banner">
-        <h1>Youth Employment</h1>
-        <p>Regional Victoria - Loddon Mallee (head office Bendigo) & Hume.<br>
-           Queensland - Sunshine Coast<br>
-           New South Wales - Murray, Riverina Region, Hunter Valley & Central Coast</p>
-        <a href="#" class="cta-button">Learn More</a>
+        <div class="content-wrapper">
+            <!-- Left: Illustration -->
+            <div class="illustration">
+                <img src="{{ url_for('static', filename='family.png') }}" alt="Illustration">
+            </div>
+    
+            <!-- Right: Text Content -->
+            <div class="text-content">
+                <h1>Youth Employment</h1>
+                <p>Regional Victoria - Loddon Mallee (head office Bendigo) & Hume.<br>
+                   Queensland - Sunshine Coast<br>
+                   New South Wales - Murray, Riverina Region, Hunter Valley & Central Coast</p>
+    
+                <!-- Mic button wrapped in a div to ensure proper centering -->
+                <div class="mic-button-wrapper">
+                    <button class="mic-button">
+                        <i class="fas fa-microphone"></i> <!-- Font Awesome microphone icon -->
+                    </button>
+                </div>
+            </div>
+        </div>
     </section>
-    <div class="illustration">
-        <img src="family.png" alt="Illustration"> <!-- Replace with the illustration -->
-    </div>
 </body>
 </html>
