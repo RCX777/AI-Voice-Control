@@ -9,6 +9,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/cardInformation', methods=['GET'])
+def cardInformation():
+    return render_template('cardInformation.html')
+
+@app.route('/subscription', methods=['GET'])
+def subscription():
+    return render_template('subscription.html')
+
 @app.route('/ai', methods=['GET'])
 def ai():
     transcript = speech_to_text('DisableSubscription.mp3')
