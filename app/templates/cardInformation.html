@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Form with Vue.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card-form {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 350px;
+    }
+    .card-preview {
+      background: #2364d2;
+      color: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .card-preview .card-number, 
+    .card-preview .card-name, 
+    .card-preview .card-expiry {
+      margin: 10px 0;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      background-color: #2364d2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1a4ea6;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app" class="card-form">
+    <div class="card-preview">
+      <div class="card-number">{{ cardNumber | default('#### #### #### ####', true) }}</div>
+      <div class="card-name">{{ cardName | default('Full Name',true) }}</div>
+      <div class="card-expiry">{{ cardMonth | default('MM', true) }}/{{ cardYear | default('YY', true) }}</div>
+    </div>
+    <h2>Card Details</h2>
+    <div class="form-group">
+      <label for="cardNumber">Card Number</label>
+      <input type="text" id="cardNumber" v-model="cardNumber" maxlength="18" placeholder="#### #### #### ####">
+    </div>
+    <div class="form-group">
+      <label for="cardName">Card Holder</label>
+      <input type="text" id="cardName" v-model="cardName" placeholder="Full Name">
+    </div>
+    <div class="form-group">
+      <label for="cardExpiryMonth">Expiration Date</label>
+      <div style="display: flex; gap: 10px;">
+        <select id="cardExpiryMonth" v-model="cardMonth">
+          <option value="" disabled selected>MM</option>
+          <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
+        </select>
+        <select id="cardExpiryYear" v-model="cardYear">
+          <option value="" disabled selected>YY</option>
+          <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cardCvv">CVV</label>
+      <input type="text" id="cardCvv" maxlength="3" placeholder="123">
+    </div>
+    <button type="button">Submit</button>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        cardNumber: '',
+        cardName: '',
+        cardMonth: '',
+        cardYear: '',
+        months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+        years: ['24', '25', '26', '27', '28', '29', '30']
+      }
+    });
+  </script>
+
+</body>
+</html>

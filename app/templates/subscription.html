@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 50px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: #d9534f;
+        }
+
+        .card h3 {
+            font-size: 48px;
+            color: #000;
+            margin: 10px 0;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .card ul li strong {
+            color: #d9534f;
+        }
+
+        .card button {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .card button:hover {
+            background-color: #c9302c;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choose Your Subscription</h1>
+    <div class="container">
+        <!-- Subscription Plan 1 -->
+        <div class="card">
+            <h2>Comfort</h2>
+            <h3>79 Lei</h3>
+            <p>per month</p>
+            <ul>
+                <li>3 consultations</li>
+                <li>Annual tests included</li>
+                <li><strong>30% discount</strong> on imaging</li>
+                <li><strong>20% discount</strong> at ER</li>
+                <li>24/7 Hotline</li>
+            </ul>
+            <button>Subscribe Now</button>
+        </div>
+
+        <!-- Subscription Plan 2 -->
+        <div class="card">
+            <h2>Comfort Plus</h2>
+            <h3>134 Lei</h3>
+            <p>per month</p>
+            <ul>
+                <li>6 consultations</li>
+                <li>Annual tests included</li>
+                <li><strong>50% discount</strong> on imaging</li>
+                <li><strong>20% discount</strong> at ER</li>
+                <li>Academic Partnership</li>
+                <li>24/7 Hotline</li>
+            </ul>
+            <button>Subscribe Now</button>
+        </div>
+
+        <!-- Subscription Plan 3 -->
+        <div class="card">
+            <h2>Comfort Extra</h2>
+            <h3>264 Lei</h3>
+            <p>per month</p>
+            <ul>
+                <li>Unlimited consultations</li>
+                <li>Annual tests included</li>
+                <li><strong>50% discount</strong> on imaging</li>
+                <li><strong>70% discount</strong> on complex investigations</li>
+                <li><strong>20% discount</strong> on surgeries</li>
+                <li>Academic Partnership</li>
+                <li>24/7 Hotline</li>
+            </ul>
+            <button>Subscribe Now</button>
+        </div>
+    </div>
+</body>
+</html>
