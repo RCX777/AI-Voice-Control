@@ -1,7 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, jsonify, request, render_template
 from app.ai import pick_action, speech_to_text
 from app.globals import cards
 
+from app.workflows import actions
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ def process_card():
         request.form['card-number-3']
     ])
     cards[card_number] = {
+        'id': card_number,
         'card_holder': request.form['card-holder'],
         'expiration_month': request.form['card-expiration-month'],
         'expiration_year': request.form['card-expiration-year'],
@@ -52,8 +54,12 @@ def process_card():
 
 @app.route('/ai', methods=['GET'])
 def ai():
-    transcript = speech_to_text('DisableSubscription.mp3')
-    print(transcript)
-    action_id = pick_action(transcript)
-    return str(action_id)
+    transcript = speech_to_text('/app/audio-samples/RemoveCard.mp3')
+    # transcript = 'Hello, I want to remove a credit card from the website. The credit card ID starts with 12345678'
+    action = pick_action(transcript)
+    return actions[action['id']]['func'](action['parameter'])
+
+@app.route('/cards', methods=['GET'])
+def get_cards():
+    return jsonify(cards)
 
