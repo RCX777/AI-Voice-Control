@@ -8,6 +8,8 @@ RUN  apt install -y \
      python3-venv
 
 COPY app /app
+COPY .env /.env
+
 RUN  python3 -m venv /opt/venv
 ENV  PATH="/opt/venv/bin:$PATH"
 RUN  pip install -Ur app/requirements.txt
