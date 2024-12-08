@@ -54,10 +54,11 @@ def process_card():
 
 @app.route('/post_audio', methods=['POST'])
 def post_audio():
-    audio_data = request.get_data()
-    audio_file = open('./temp.mp3', 'wb')
+    audio_data = request.files['audio'].read()
+    audio_file = open('/app/temp.mp3', 'wb')
     audio_file.write(audio_data)
-    transcript = speech_to_text('./temp.mp3')
+    transcript = speech_to_text('/app/temp.mp3')
+    print(transcript)
     action = pick_action(transcript)
     return actions[action['id']]['func'](action['parameter'])
 
@@ -66,7 +67,7 @@ def ai():
     transcript = speech_to_text('/app/audio-samples/RemoveCard.mp3')
     # transcript = 'Hello, I want to remove a credit card from the website. The credit card ID starts with 12345678'
     action = pick_action(transcript)
-    return actions[action['id']]['func'](action['parameter'])
+    return jsonify(actions[action['id']]['func'](action['parameter']))
 
 @app.route('/cards', methods=['GET'])
 def get_cards():

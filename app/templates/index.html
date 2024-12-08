@@ -131,17 +131,65 @@
             cursor: pointer;
             font-size: 24px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         .mic-button:hover {
             background-color: #0056b3;
             
         }
+
         .mic-button-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px; /* Space between the text and the button */
+            margin-top: 20px;
         }
+
+        .mic-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 69, 0, 0.3);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            transform: translate(-50%, -50%) scale(0);
+            display: none;
+        }
+
+        .mic-button.recording {
+            background-color: red; /* Red background for recording */
+            border-radius: 0; /* Square shape for recording state */
+        }
+
+        .mic-button.recording .mic-animation {
+            display: block;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .download-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-link a {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         .illustration {
             display: flex;
             justify-content: center;
@@ -214,10 +262,64 @@
     
                 <!-- Mic button wrapped in a div to ensure proper centering -->
                 <div class="mic-button-wrapper">
-                    <button class="mic-button">
-                        <i class="fas fa-microphone"></i> <!-- Font Awesome microphone icon -->
+                    <button class="mic-button" id="mic-button">
+                        <i class="fas fa-microphone"></i>
+                        <div class="mic-animation"></div>
                     </button>
                 </div>
+                <div class="download-link" id="download-link"></div>
+                <script>
+                    const micButton = document.getElementById('mic-button');
+                    let mediaRecorder;
+                    let audioChunks = [];
+
+                    micButton.addEventListener('click', async () => {
+                        if (micButton.classList.contains('recording')) {
+                            // Stop recording
+                            micButton.classList.remove('recording');
+                            mediaRecorder.stop();
+                        } else {
+                            // Start recording
+                            micButton.classList.add('recording');
+                            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                            mediaRecorder = new MediaRecorder(stream);
+
+                            mediaRecorder.ondataavailable = (event) => {
+                                audioChunks.push(event.data);
+                            };
+
+                            mediaRecorder.onstop = async () => {
+                                // Create a Blob from the recorded audio
+                                const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                                audioChunks = []; // Clear the chunks for future recordings
+
+                                // Create a FormData object and append the audio file
+                                const formData = new FormData();
+                                formData.append('audio', audioBlob, 'recording.mp3');
+
+                                try {
+                                    // Send the audio data to the Flask server
+                                    const response = await fetch('/post_audio', {
+                                        method: 'POST',
+                                        body: formData,
+                                    });
+
+                                    // Handle the server response
+                                    if (response.ok) {
+                                        const result = await response.json(); // Assuming the server sends a JSON response
+                                        alert('Server Response: ' + JSON.stringify(result));
+                                    } else {
+                                        console.error('Error from server:', response.status, response.statusText);
+                                    }
+                                } catch (error) {
+                                    console.error('Error uploading audio:', error);
+                                }
+                            };
+
+                            mediaRecorder.start();
+                        }
+                    });
+                </script>
             </div>
         </div>
     </section>

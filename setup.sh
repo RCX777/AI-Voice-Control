@@ -45,5 +45,6 @@ docker exec $container_name bash -c "
     useradd -u $UID -g $GID $USER &&
     mkdir /home/$USER &&
     chown -R $UID:$GID /home/$USER &&
+    chown -R $UID:$GID /app &&
     mkdir -p /etc/sudoers.d &&
     echo '$USER ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/$USER"
