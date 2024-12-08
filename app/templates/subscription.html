@@ -132,31 +132,38 @@
             padding: 10px 20px;
             cursor: pointer;
             margin-top: 20px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .card button:hover {
-            background-color: orange;
+            background-color: darkorange;
+        }
+
+        .card button.subscribed {
+            background-color: green;
+            color: white;
+            cursor: default;
         }
 
         h1 {
             text-align: center;
             margin-top: 20px;
         }
+
         .logo-link {
-            text-decoration: none; /* Remove underline from the link */
-            display: flex; /* Ensure the logo and text align properly */
-            align-items: center; /* Vertical alignment */
+            text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
         .logo-title {
-            color: black; /* Default color */
-            margin: 0; /* Ensure no unnecessary margins around the title */
-            transition: color 0.3s ease; /* Smooth color transition */
+            color: black;
+            margin: 0;
+            transition: color 0.3s ease;
         }
 
         .logo-title:hover {
-            color: orange; /* Hover color */
+            color: orange;
         }
     </style>
 </head>
@@ -164,7 +171,7 @@
     <header class="header">
         <div class="logo">
             <a href="/" class="logo-link">
-                <img src="{{url_for('static', filename='icon.png')}}" alt="PisaCare Logo"> <!-- Replace with your logo -->
+                <img src="{{url_for('static', filename='icon.png')}}" alt="PisaCare Logo">
             </a>
             <a href="/" class="logo-link">
                 <h1 class="logo-title" style="color: black;">PisaCare</h1>
@@ -193,7 +200,7 @@
                 <li><strong>20% discount</strong> at ER</li>
                 <li>24/7 Hotline</li>
             </ul>
-            <button>Subscribe Now</button>
+            <button id="comfort", data-status="false", class="subscribe-button">Subscribe Now</button>
         </div>
 
         <!-- Subscription Plan 2 -->
@@ -209,7 +216,7 @@
                 <li>Academic Partnership</li>
                 <li>24/7 Hotline</li>
             </ul>
-            <button>Subscribe Now</button>
+            <button id="plus", data-status="false", class="subscribe-button">Subscribe Now</button>
         </div>
 
         <!-- Subscription Plan 3 -->
@@ -226,8 +233,59 @@
                 <li>Academic Partnership</li>
                 <li>24/7 Hotline</li>
             </ul>
-            <button>Subscribe Now</button>
+            <button id="extra", data-status="false", class="subscribe-button">Subscribe Now</button>
         </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            document.querySelectorAll('.subscribe-button').forEach(button => {
+                fetch('subscriptions/' + button.id)
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        button.dataset.status = json;
+                        if (button.dataset.status == "true") {
+                            button.textContent = 'Subscribed';
+                            button.classList.add('subscribed');
+                        }
+                        return json
+                    })
+            })
+        }
+        document.querySelectorAll('.subscribe-button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (!button.classList.contains('subscribed')) {
+                    button.textContent = 'Subscribed';
+                    button.classList.add('subscribed');
+                    button.dataset.status = "true";
+                    fetch("post_subscriptions", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            name: button.id,
+                            status: button.dataset.status
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    })
+                } else {
+                    button.textContent = 'Subscribe Now';
+                    button.classList.remove('subscribed');
+                    button.dataset.status = "false";
+                    fetch("post_subscriptions", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            name: button.id,
+                            status: button.dataset.status
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    })
+                }
+            });
+        });
+    </script>
 </body>
 </html>

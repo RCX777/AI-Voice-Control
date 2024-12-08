@@ -1,12 +1,14 @@
 from app.globals import cards, subscriptions
 
 def disable_subscription(param: str):
+    print(param)
     subscriptions[param] = False
     print(subscriptions)
     return "disabled subscription!!"
 
 
 def activate_subscription(param: str):
+    print(param)
     subscriptions[param] = True
     return 'activated subscription!!'
 

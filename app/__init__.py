@@ -85,6 +85,20 @@ def ai():
 def get_cards():
     return jsonify(cards)
 
-@app.route('/subscriptions', methods=['GET'])
-def get_susbscriptions():
-    return jsonify(subscriptions)
+@app.route('/subscriptions/<name>', methods=['GET'])
+def get_susbscriptions(name: str):
+    for plan in subscriptions.keys():
+        if name == plan:
+            return jsonify(subscriptions[plan])
+    return "", 400
+
+@app.route('/post_subscriptions', methods=['POST'])
+def post_susbscriptions():
+    data = request.get_json()
+    name = data['name']
+    if data['status'] == 'true':
+        subscriptions[name] = True
+    else:
+        subscriptions[name] = False
+    print(subscriptions)
+    return "", 200
