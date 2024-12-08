@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card-link {
+            text-decoration: none; /* Remove default underline from links */
+            color: inherit; /* Inherit the card text color */
+            display: block; /* Make the entire card clickable */
+        }
+        .card {
+            width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom right, #4caf50, #81c784);
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05); /* Slightly enlarge the card on hover */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+        }
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.5rem;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logo-link {
+            text-decoration: none; /* Remove underline from the link */
+            display: flex; /* Ensure the logo and text align properly */
+            align-items: center; /* Vertical alignment */
+        }
+        .logo-title {
+            color: black; /* Default color */
+            margin: 0; /* Ensure no unnecessary margins around the title */
+            transition: color 0.3s ease; /* Smooth color transition */
+        }
+        .logo-title:hover {
+            color: orange; /* Hover color */
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav a:hover {
+            color: orange;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: orange;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: scaleX(0);
+        }
+        .nav a:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        .orange-line {
+            height: 5px;
+            background-color: orange;
+        }
+        .divider {
+            height: 1px;
+            background-color: #ddd;
+            margin-top: 20px;
+            width: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="/" class="logo-link">
+                <img src="{{url_for('static', filename='icon.png')}}" alt="PisaCare Logo"> <!-- Replace with your logo -->
+            </a>
+            <a href="/" class="logo-link">
+                <h1 class="logo-title" style="color: black;">PisaCare</h1>
+            </a>
+        </div>
+        <nav class="nav">
+            <a href="#">Appoinment</a>
+            <a href="#">About</a>
+            <a href="display_cards">My Cards</a>
+            <a href="cardInformation">Card information</a>
+            <a href="subscription">Subscription</a>
+        </nav>
+    </header>
+    <div class="orange-line"></div>
+    <div class="divider"></div>
+    
+    <h1>My Cards</h1>
+    <div class="card-container">
+        {% for card_number, card in cards.items() %}
+        <a href="/card_details/{{ card_number }}" class="card-link">
+            <div class="card">
+                <h3>{{ card.card_holder }}</h3>
+                <p><strong>Card Number:</strong> **** **** **** {{ card_number[-4:] }}</p>
+                <p><strong>Expiration:</strong> {{ card.expiration_month }}/{{ card.expiration_year }}</p>
+                <p><strong>CCV:</strong> ***</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

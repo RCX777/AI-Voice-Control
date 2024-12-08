@@ -15,6 +15,18 @@ def index():
 def cardInformation():
     return render_template('cardInformation.html')
 
+@app.route('/display_cards', methods=['GET'])
+def display_cards():
+    if not cards:
+        return render_template('cardInformation.html')
+    return render_template('display_cards.html', cards=cards)
+
+@app.route('/subscription/choosePayment', methods=['GET'])
+def choosePayment():
+    if not cards:
+        return render_template('cardInformation.html')
+    return render_template('choosePayment.html', cards=cards)
+
 @app.route('/subscription', methods=['GET'])
 def subscription():
     return render_template('subscription.html')
@@ -50,7 +62,7 @@ def process_card():
         return "Invalid CCV", 400
     print(cards)
 
-    return "Card details processed successfully!", 200
+    return render_template('display_cards.html', cards=cards)
 
 @app.route('/post_audio', methods=['POST'])
 def post_audio():
