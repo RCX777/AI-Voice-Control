@@ -1,9 +1,13 @@
-from app.globals import cards
+from app.globals import cards, subscriptions
 
 def disable_subscription(param: str):
+    subscriptions[param] = False
+    print(subscriptions)
     return "disabled subscription!!"
 
+
 def activate_subscription(param: str):
+    subscriptions[param] = True
     return 'activated subscription!!'
 
 def remove_card_with_id(param: str):

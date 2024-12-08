@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, render_template
 from app.ai import pick_action, speech_to_text
-from app.globals import cards
+from app.globals import cards, subscriptions
 
 from app.workflows import actions
 
@@ -85,3 +85,6 @@ def ai():
 def get_cards():
     return jsonify(cards)
 
+@app.route('/subscriptions', methods=['GET'])
+def get_susbscriptions():
+    return jsonify(subscriptions)
